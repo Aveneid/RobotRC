@@ -1,7 +1,7 @@
 #include <RCSwitch.h>
 #define joyX A0
 #define joyY A1
-short int ymap, xmap;
+char ymap, xmap;
 int xValue, yValue;
 
 
@@ -28,16 +28,7 @@ void loop() {
   if(xValue < 510 and xValue >490){
     xmap = 0;
   }
-
-
-  //print the values with to plot or view
-  //Serial.print(xValue);
-  Serial.print(ymap);
-  Serial.print("\t");
-  Serial.print(xmap);
-  Serial.print("\n");
-
-
+  
     
     if(xmap < 0){
       xmap=20 - xmap;
@@ -53,13 +44,8 @@ void loop() {
       ymap+=40;
     }
 
+  mySwitch.send(ymap,8);
+  mySwitch.send(xmap,8);
 
-  Serial.print(ymap);
-  Serial.print("\t");
-  Serial.print(xmap);
-  Serial.print("\n");
-  
-  mySwitch.send(xmap);
-  mySwitch.send(ymap);
 }
 
