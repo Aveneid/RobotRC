@@ -11,7 +11,6 @@
 #define frontLights 1 
 #define backLights 0
 
-int mode = 1; //forward 1 back 2
 RCSwitch recreiver = RCSwitch();
 void steeringWheel(int data){   
   int direction = data / 10;
@@ -30,39 +29,21 @@ void mainEngine(int data){
   int direction = data / 10;              //get direction
   int speed = (data%10) * 25;           //get speed
 
- // if(mode==1){                  //mode forward
-  if(direction==1){     
-    Serial.println("for");// forward  
+  if(direction==1){ //forward    
     analogWrite(rearWheel1,255);
     analogWrite(rearWheel2,0);
   }
-  /*if(direction==2){               // brakes
-    digitalWrite(rearWheel1,LOW);
-    digitalWrite(rearWheel2,LOW);
-  }  
- } 
-  if(mode == 2){*/
+
   if(direction==2){             
     Serial.println("back");// backward  
     analogWrite(rearWheel1,0);
     analogWrite(rearWheel2,255);
-  }/*
-  if(direction==2){               // brakes
-    digitalWrite(rearWheel1,LOW);
-    digitalWrite(rearWheel2,LOW);
-  }  
-  } */
-  
- /* if((mode == 1 && direction == 2) ||( mode == 2 && direction == 2)){
-    digitalWrite(backLights,HIGH);      //turn on stop lights
-    analogWrite(enableRearWheels,255);    //fast motor stop
-  } else {*/
-    Serial.println(digitalRead(rearWheel1));
-  Serial.println(digitalRead(rearWheel2));
+  }
+ 
     analogWrite(enableRearWheels,speed);   //0xaa
-   Serial.println(analogRead(rearWheel2));/*
+ 
     if(digitalRead(backLights) == HIGH) digitalWrite(backLights,LOW);
-  }*/
+  }
     
 }
 
@@ -98,9 +79,9 @@ void loop(){
   if(recreiver.available()){
     int data = recreiver.getReceivedValue();
     int command = data/10;
-    Serial.print(data);Serial.println("");
-    if(data == -25464) mainEngine(17);
-    if(data == -25470) mainEngine(27);
+    //Serial.print(data);Serial.println("");
+    //if(data == -25464) mainEngine(17);
+    //if(data == -25470) mainEngine(27);
     if(data == 91){tone(hornHorn,2137,250);tone(hornHorn,2137,250);}
     if(data == 90) toggleLights();
   
@@ -108,7 +89,7 @@ void loop(){
       case 1: case 2: mainEngine(data); break;
       case 3: case 4: steeringWheel(data); break; 
     default: 
-  //  digitalWrite(enableRearWheels,LOW);  //free-runnig rear wheels
+      digitalWrite(enableRearWheels,LOW);  //free-runnig rear wheels
     break;
   }    
   }
